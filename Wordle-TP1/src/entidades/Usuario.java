@@ -33,10 +33,15 @@ public class Usuario
 		return this.punto -= 1;
 	}
 	
-	@Override
-	public String toString() 
+
+	public String retornarNombre() 
 	{
-		return "Nombre: " + nombre + ", punto :" + punto + ".";
-	}	
+		return this.nombre;
+	}
+	
+	public int retornarPuntos()
+	{
+		return this.punto;
+	}
 	
 }

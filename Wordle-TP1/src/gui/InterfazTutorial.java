@@ -10,36 +10,26 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import entidades.Usuario;
+
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class InterfazTutorial {
 
 	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfazTutorial window = new InterfazTutorial();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private Usuario usuario;
 
 	/**
 	 * Create the application.
 	 */
-	public InterfazTutorial() {
+	public InterfazTutorial(String nombre) {
+		this.usuario = new Usuario(nombre);
 		initialize();
 	}
 
@@ -49,12 +39,28 @@ public class InterfazTutorial {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setSize(1000, 722);
+		frame.getContentPane().setLayout(null);
+		
+		if (usuario != null) 
+		{
+			JLabel nombreUsuario = new JLabel("Nombre: " + this.usuario.retornarNombre());
+			nombreUsuario.setHorizontalAlignment(SwingConstants.LEFT);
+			nombreUsuario.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+			nombreUsuario.setBounds(30, 51, 200, 48);
+			frame.getContentPane().add(nombreUsuario);
+		}
+		
+
+		JLabel etiquetaLogoTutorial = new JLabel("");
+		etiquetaLogoTutorial.setIcon(new ImageIcon(InterfazJuego.class.getResource("/recursos/Logo.png")));
+		etiquetaLogoTutorial.setBounds(323, 78, 600, 139);
+		frame.getContentPane().add(etiquetaLogoTutorial);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JScrollPane tutorialScroll = new JScrollPane();
-		tutorialScroll.setBounds(237, 47, 724, 557);
+		tutorialScroll.setBounds(237, 243, 724, 437);
 		frame.getContentPane().add(tutorialScroll);
 		
 		JLabel etiquetaTutorial = new JLabel("");
@@ -64,11 +70,26 @@ public class InterfazTutorial {
 		
 		JButton btnSiguienteTutorial = new JButton("Siguiente ->");
 		btnSiguienteTutorial.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
-		btnSiguienteTutorial.setBounds(831, 653, 130, 36);
+		btnSiguienteTutorial.setBounds(831, 684, 130, 36);
 		frame.getContentPane().add(btnSiguienteTutorial);
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+        btnSiguienteTutorial.addActionListener(e -> {
+            try {
+                InterfazJuego juego = new InterfazJuego(this.usuario.retornarNombre());
+                juego.getFrame().setVisible(true); // o tutorial.setVisible(true) según cómo la tengas hecha
+                
+                frame.dispose(); // opcional: cierra la ventana actual
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+		
+	}
+	
+	public JFrame getFrame() {
+	    return frame;
 	}
 	
 

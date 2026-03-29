@@ -10,6 +10,10 @@ import java.awt.ScrollPane;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
@@ -19,7 +23,7 @@ import java.awt.Rectangle;
 public class InterfazInicio {
 
 	private JFrame frame;
-	private JTextField txtJuan;
+	private JTextField txtNombre;
 
 	/**
 	 * Launch the application.
@@ -63,11 +67,11 @@ public class InterfazInicio {
 		etiquetaNombre.setBounds(232, 267, 130, 29);
 		frame.getContentPane().add(etiquetaNombre);
 		
-		txtJuan = new JTextField();
-		txtJuan.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
-		txtJuan.setBounds(372, 267, 150, 29);
-		frame.getContentPane().add(txtJuan);
-		txtJuan.setColumns(10);
+		txtNombre = new JTextField();
+		txtNombre.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
+		txtNombre.setBounds(372, 267, 150, 29);
+		frame.getContentPane().add(txtNombre);
+		txtNombre.setColumns(10);
 		
 		JLabel etiquetaIdioma = new JLabel("Idioma / Language:");
 		etiquetaIdioma.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
@@ -94,7 +98,53 @@ public class InterfazInicio {
 		JButton btnSiguiente = new JButton("Siguiente ->");
 		btnSiguiente.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		btnSiguiente.setBounds(616, 437, 130, 36);
+		btnSiguiente.setEnabled(false);
+
 		frame.getContentPane().add(btnSiguiente);
+		
+
+
+        txtNombre.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void validar() {
+
+                btnSiguiente.setEnabled(!txtNombre.getText().trim().isEmpty());
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validar();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validar();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validar();
+            }
+        });
+
+        btnSiguiente.addActionListener(e -> 
+        {
+            try 
+            {
+                String nombre = txtNombre.getText(); 
+
+                InterfazTutorial tutorial = new InterfazTutorial(nombre); 
+                tutorial.getFrame().setVisible(true);
+
+                frame.dispose();
+            } catch (Exception ex) 
+            {
+                ex.printStackTrace();
+            }
+        });
+		
+		
+		
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
