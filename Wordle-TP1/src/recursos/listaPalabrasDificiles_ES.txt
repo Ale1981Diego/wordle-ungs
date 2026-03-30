@@ -3,7 +3,7 @@ buzon
 cenit
 greda
 hampa
-ñandu
+hindu
 pifia
 quark
 reuma
@@ -14,7 +14,7 @@ vedar
 xenia
 yelmo
 zaino
-ábaco
-fútil
-ígneo
-óxido
+abaco
+futil
+igneo
+oxido

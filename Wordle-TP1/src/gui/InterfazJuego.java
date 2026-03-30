@@ -7,24 +7,43 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
+
 import entidades.Usuario;
+import entidades.Wordle;
+
+import javax.swing.JTextField;
 
 public class InterfazJuego {
 
 	private JFrame frame;
 	private Usuario usuario;
+	private Wordle juego;
+	private JTextField textField;
 
 	/**
 	 * Create the application.
 	 */
 	public InterfazJuego(String nombre) {
 		this.usuario = new Usuario(nombre);
+		this.juego = new Wordle();
+		
+		try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error setting native LAF: " + e);
+		}
+		
 		initialize();
 	}
 
@@ -33,7 +52,7 @@ public class InterfazJuego {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1000, 800);
+		frame.setBounds(100, 100, 1227, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -54,7 +73,7 @@ public class InterfazJuego {
 		
 		JLabel etiquetaLogoJuego = new JLabel("");
 		etiquetaLogoJuego.setIcon(new ImageIcon(InterfazJuego.class.getResource("/recursos/Logo.png")));
-		etiquetaLogoJuego.setBounds(323, 78, 600, 139);
+		etiquetaLogoJuego.setBounds(275, 79, 600, 139);
 		frame.getContentPane().add(etiquetaLogoJuego);
 		
 		JLabel etiquetaLetra0 = new JLabel("");
@@ -328,9 +347,17 @@ public class InterfazJuego {
 		etiquetaLetra29.setBounds(680, 609, 56, 56);
 		frame.getContentPane().add(etiquetaLetra29);
 		
+		textField = new JTextField();
+		textField.setForeground(new Color(255, 255, 255));
+		textField.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
+		textField.setBounds(400, 694, 336, 41);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
 	}
 	
-	public JFrame getFrame() {
+	public JFrame getFrame() 
+	{
 	    return frame;
 	}
 
