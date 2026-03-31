@@ -31,5 +31,9 @@ public class Palabra
 		return existe;	
 	}
 	
+	public String devolverPalabra()
+	{
+		return this.palabra;
+	}
 
 }

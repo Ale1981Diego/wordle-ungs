@@ -15,11 +15,15 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
-
+import entidades.Palabra;
 import entidades.Usuario;
 import entidades.Wordle;
 
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 public class InterfazJuego {
 
@@ -31,9 +35,9 @@ public class InterfazJuego {
 	/**
 	 * Create the application.
 	 */
-	public InterfazJuego(String nombre) {
-		this.usuario = new Usuario(nombre);
-		this.juego = new Wordle();
+	public InterfazJuego(Usuario usuario, Palabra palabra) {
+		this.usuario = usuario;
+		this.juego = new Wordle(this.usuario, palabra);
 		
 		try
 		{
@@ -69,6 +73,12 @@ public class InterfazJuego {
 			puntosUsuario.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
 			puntosUsuario.setBounds(30, 81, 200, 48);
 			frame.getContentPane().add(puntosUsuario);
+			
+			JLabel vidaUsuario = new JLabel("Vidas: " + this.usuario.mostrarVida());
+			vidaUsuario.setHorizontalAlignment(SwingConstants.LEFT);
+			vidaUsuario.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+			vidaUsuario.setBounds(30, 111, 200, 48);
+			frame.getContentPane().add(vidaUsuario);
 		}
 		
 		JLabel etiquetaLogoJuego = new JLabel("");
@@ -348,6 +358,12 @@ public class InterfazJuego {
 		frame.getContentPane().add(etiquetaLetra29);
 		
 		textField = new JTextField();
+		textField.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+			}
+		});
 		textField.setForeground(new Color(255, 255, 255));
 		textField.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		textField.setBounds(400, 694, 336, 41);

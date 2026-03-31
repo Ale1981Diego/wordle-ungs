@@ -96,7 +96,7 @@ public class InterfazTutorial
         {
             try 
             {
-                InterfazJuego juego = new InterfazJuego(this.usuario.retornarNombre());
+                InterfazJuego juego = new InterfazJuego(this.usuario, this.palabraSecreta);
                 juego.getFrame().setVisible(true); // o tutorial.setVisible(true) según cómo la tengas hecha
                 
                 frame.dispose(); // opcional: cierra la ventana actual
