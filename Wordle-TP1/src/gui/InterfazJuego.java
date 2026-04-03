@@ -24,6 +24,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class InterfazJuego {
 
@@ -31,6 +33,8 @@ public class InterfazJuego {
 	private Usuario usuario;
 	private Wordle juego;
 	private JTextField textField;
+	private String palabraUsuario;
+	private int posicionLetras;
 
 	/**
 	 * Create the application.
@@ -74,17 +78,38 @@ public class InterfazJuego {
 			puntosUsuario.setBounds(30, 81, 200, 48);
 			frame.getContentPane().add(puntosUsuario);
 			
-			JLabel vidaUsuario = new JLabel("Vidas: " + this.usuario.mostrarVida());
-			vidaUsuario.setHorizontalAlignment(SwingConstants.LEFT);
-			vidaUsuario.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-			vidaUsuario.setBounds(30, 111, 200, 48);
-			frame.getContentPane().add(vidaUsuario);
+			JLabel intentoUsuario = new JLabel("Intentos: " + this.usuario.mostrarIntento());
+			intentoUsuario.setHorizontalAlignment(SwingConstants.LEFT);
+			intentoUsuario.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+			intentoUsuario.setBounds(30, 111, 200, 48);
+			frame.getContentPane().add(intentoUsuario);
 		}
+		
+		// inicializo la palabra usuario como vacio.
+		this.palabraUsuario = "";
+		
+		// controla en que 
+		this.posicionLetras = 0;
 		
 		JLabel etiquetaLogoJuego = new JLabel("");
 		etiquetaLogoJuego.setIcon(new ImageIcon(InterfazJuego.class.getResource("/recursos/Logo.png")));
 		etiquetaLogoJuego.setBounds(275, 79, 600, 139);
 		frame.getContentPane().add(etiquetaLogoJuego);
+		/*
+		JLabel[][] etiquetas = new JLabel[6][5];
+		for(int fila = 0; fila < etiquetas.length; fila ++ )
+		{
+			for(int col = 0; col < etiquetas[0].length; col++)
+			{
+				etiquetas[fila][col] = new JLabel("");
+				etiquetas[fila][col].setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				etiquetas[fila][col].setForeground(new Color(0, 0, 0));
+				etiquetas[fila][col].setBackground(new Color(0, 0, 0));
+				etiquetas[fila][col].setFont(new Font("Comic Sans MS", Font.BOLD, 14));
+				etiquetas[fila][col].setHorizontalAlignment(SwingConstants.CENTER);
+				frame.getContentPane().add(etiquetas[fila][col]);
+			}
+		}*/
 		
 		JLabel etiquetaLetra0 = new JLabel("");
 		etiquetaLetra0.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -358,12 +383,45 @@ public class InterfazJuego {
 		frame.getContentPane().add(etiquetaLetra29);
 		
 		textField = new JTextField();
-		textField.addActionListener(new ActionListener()
+		textField.addKeyListener(new KeyAdapter()
 		{
-			public void actionPerformed(ActionEvent e) 
+			@Override
+			public void keyPressed(KeyEvent e)
 			{
+				if(palabraUsuario.length() < 5)
+				{
+					palabraUsuario = palabraUsuario + e.getKeyChar();
+				}
+			}	
+
+		});
+		
+		//Evento de escritura por el usuario.
+		textField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER && palabraUsuario.length() == 5)
+				{
+					if(juego.comparaPalabraUsuario(palabraUsuario))
+					{
+						//usuario.terminarJuego();
+					}
+					else
+					{
+						//fila ++;
+						//col = 0;
+						//usuario.descontarIntento();
+					}
+					
+					
+				}
 			}
 		});
+				
+		
+		
 		textField.setForeground(new Color(255, 255, 255));
 		textField.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		textField.setBounds(400, 694, 336, 41);

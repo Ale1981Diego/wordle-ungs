@@ -4,31 +4,36 @@ public class Usuario
 {
 	private String nombre;
 	private int punto;
-	private int vida;
+	private int intento;
 	
 	public Usuario()
 	{
 		this.nombre = "";
 		this.punto = 0;
-		this.vida = 0;
+		this.intento = 0;
 	}
 	
 	public Usuario(String nombre)
 	{
 		this.nombre = nombre;
 		this.punto = 0;
-		this.vida = 6;
+		this.intento = 6;
 	}
 
 
-	public int sumaPuntoLetraCoincideEnLugar()
+	public void sumaPuntoLetraCoincideEnLugar()
 	{
-		return this.punto += 3;
+		 this.punto += 3;
 	}
 	
-	public int sumaPuntoLetraExiste()
+	public void sumaPuntoLetraExiste()
 	{
-		return this.punto += 1;
+		this.punto += 1;
+	}
+	
+	public void aciertaPalabraCompleta()
+	{
+		this.punto += (3*5);
 	}
 	
 	public int restaPuntoLetraNoCoincide()
@@ -47,14 +52,15 @@ public class Usuario
 		return this.punto;
 	}
 	
-	public void descontarVida()
+	public void descontarIntento()
 	{
-		this.vida -= 1;
+		this.intento -= 1;
 	}
 	
-	public int mostrarVida()
+	public int mostrarIntento()
 	{
-		return this.vida;
+		return this.intento;
 	}
+	
 	
 }

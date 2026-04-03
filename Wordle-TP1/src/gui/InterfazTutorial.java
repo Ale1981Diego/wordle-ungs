@@ -22,6 +22,9 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+
+
+/* decidir si es o no necesaria esta pantalla o controlar el tutorial desde inicio. */
 public class InterfazTutorial
 {
 
@@ -55,14 +58,14 @@ public class InterfazTutorial
 	private void initialize()
 	{
 		frame = new JFrame();
-		frame.setSize(1000, 722);
+		frame.setSize(800, 600);
 		frame.getContentPane().setLayout(null);
 		
 		if (usuario != null) 
 		{
 			JLabel nombreUsuario = new JLabel("Nombre: " + this.usuario.retornarNombre());
 			nombreUsuario.setHorizontalAlignment(SwingConstants.LEFT);
-			nombreUsuario.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+			nombreUsuario.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
 			nombreUsuario.setBounds(30, 51, 200, 48);
 			frame.getContentPane().add(nombreUsuario);
 		}
@@ -86,7 +89,7 @@ public class InterfazTutorial
 	
 		
 		JButton btnSiguienteTutorial = new JButton("Siguiente ->");
-		btnSiguienteTutorial.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
+		btnSiguienteTutorial.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
 		btnSiguienteTutorial.setBounds(735, 676, 130, 36);
 		frame.getContentPane().add(btnSiguienteTutorial);
 		frame.setBounds(100, 100, 1000, 800);
@@ -106,6 +109,7 @@ public class InterfazTutorial
                 ex.printStackTrace();
             }
         });
+        
 		
 	}
 	
