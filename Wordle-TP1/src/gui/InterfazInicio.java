@@ -1,241 +1,174 @@
 package gui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import java.awt.Font;
-import java.awt.Canvas;
-import javax.swing.JScrollPane;
-import java.awt.ScrollPane;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.Button;
+import java.awt.event.*;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import entidades.Wungsdle;
 
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JRadioButton;
-import javax.swing.JButton;
-import java.awt.Rectangle;
-
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
-
-public class InterfazInicio
+public class InterfazInicio extends JFrame
 {
 
-	private JFrame frame;
-	private JTextField txtNombre;
+	private Wungsdle wordle;
+	private String iniciarJuego = "";
+	private String configuracion = "";
 
-
-	/**
-	 * Create the application.
-	 */
-	public InterfazInicio()
+	public InterfazInicio(Wungsdle wordle) 
 	{
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error setting native LAF: " + e);
-		}
-		
-		initialize();
+		this.wordle = wordle;
+		crearInterfazInicio();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize()
+	private void crearInterfazInicio() 
 	{
-		setFrame(new JFrame());
-		getFrame().setSize(800, 600);
-		getFrame().getContentPane().setFont(new Font("Luckiest Guy", Font.PLAIN, 11));
-		getFrame().getContentPane().setLayout(null);
-		
-		JLabel logo = new JLabel("New label");
-		logo.setIcon(new ImageIcon(InterfazInicio.class.getResource("/recursos/Logo.png")));
-		logo.setBounds(190, 41, 598, 175);
-		getFrame().getContentPane().add(logo);
-		
-		JLabel etiquetaNombre = new JLabel("Nombre / Name:");
-		etiquetaNombre.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		etiquetaNombre.setBounds(367, 267, 130, 29);
-		getFrame().getContentPane().add(etiquetaNombre);
-		
-		txtNombre = new JTextField();
-		txtNombre.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		txtNombre.setBounds(530, 267, 150, 29);
-		getFrame().getContentPane().add(txtNombre);
-		txtNombre.setColumns(10);
-		
-		JLabel etiquetaIdioma = new JLabel("Idioma / Language:");
-		etiquetaIdioma.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		etiquetaIdioma.setBounds(361, 318, 136, 29);
-		getFrame().getContentPane().add(etiquetaIdioma);
-		
-		JComboBox idioma = new JComboBox();
-		idioma.setModel(new DefaultComboBoxModel(new String[] {"Espa\u00F1ol - ES", "English - EN"}));
-		idioma.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		idioma.setBounds(530, 318, 150, 29);
-		getFrame().getContentPane().add(idioma);
-		
-		JLabel etiquetaDificultad = new JLabel("Dificultad / Difficulty:");
-		etiquetaDificultad.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		etiquetaDificultad.setBounds(339, 372, 158, 29);
-		getFrame().getContentPane().add(etiquetaDificultad);
-		
-		JComboBox dificultad = new JComboBox();
-		dificultad.setModel(new DefaultComboBoxModel(new String[] {"Facil / Easy", "Dificil / Hard"}));
-		dificultad.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		dificultad.setBounds(530, 372, 150, 29);
-		getFrame().getContentPane().add(dificultad);
-		
-		JButton btnSiguiente = new JButton("Siguiente ->");
-		btnSiguiente.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		btnSiguiente.setBounds(621, 511, 130, 36);
-		btnSiguiente.setEnabled(false);
 
-		getFrame().getContentPane().add(btnSiguiente);
-		
+		JPanel panel = new JPanel();
+		JLabel logo = new JLabel();
+		JPanel contenedorMenu = new JPanel();
+		Button btnInicio = new Button();
+		Button btnTutorial = new Button();
+		Button btnConfig = new Button();
+		Button btnRanking = new Button();
+		actualizarTextos();
+		///////////////////////////////////////////////////////// BOTONES///////////////////////////////////////////////////
 
-		// Valida si el usuario ingreso un nombre, para activar el boton Siguiente //
-		
-        txtNombre.getDocument().addDocumentListener(new DocumentListener()
-        {
+		btnInicio.setLabel(iniciarJuego);
+		btnInicio.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+		btnInicio.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent accion) 
+			{
+				visualizarInterfazJuego(accion);
+			}
+		});
+		btnTutorial.setLabel("Tutorial");
+		btnTutorial.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+		btnTutorial.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent accion) 
+			{
+				visualizarInterfazTutorial(accion);
+			}
 
-            private void validar() {
+		});
+		btnConfig.setLabel(configuracion);
+		btnConfig.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+		btnConfig.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent accion) 
+			{
+				visualizarInterfazConfiguracion(accion);
+			}
 
-                btnSiguiente.setEnabled(!txtNombre.getText().trim().isEmpty());
-            }
+		});
+		btnRanking.setLabel("Ranking");
+		btnRanking.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+		btnRanking.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent accion) 
+			{
+				visualizarInterfazRanking(accion);
+			}
 
-            @Override
-            public void insertUpdate(DocumentEvent e) 
-            {
-                validar();
-            }
+		});
 
-            @Override
-            public void removeUpdate(DocumentEvent e)
-            {
-                validar();
-            }
+		setSize(1000, 800);
+		getContentPane().setFont(new Font("Luckiest Guy", Font.PLAIN, 11));
+		getContentPane().setLayout(null);
+		panel.setLayout(null);
 
-            @Override
-            public void changedUpdate(DocumentEvent e)
-            {
-                validar();
-            }
-        });
+		logo.setBounds(119, 11, 600, 315);
+		panel.add(logo);
+		if(wordle.getIdiomaActual().startsWith("English")) 
+		{
+			logo.setIcon(new ImageIcon(InterfazInicio.class.getResource("/recursos/Logo.png")));
+		}
+		else 
+		{
+			logo.setIcon(new ImageIcon(InterfazInicio.class.getResource("/recursos/LogoEspaniol.png")));
+		}
 
-        btnSiguiente.addActionListener(e -> 
-        {
-            try 
-            {
-            	// Capturo el nombre del usuario.
-            	String nombre = txtNombre.getText();
-                
-                // Caputuro el idioma elegido por el usuario.
-                String idiomaElegido = (String)idioma.getSelectedItem();
-                
-                // Capturo la dificultad seleccionada por el usuario.
-                String dificultadElegida = (String)dificultad.getSelectedItem();
-                
-                // Tomo una palabra secreta, dependiendo de la dificultad y el idioma seleccionado.
-                String rutaTxt = rutaTxtSegunSeleccion(idiomaElegido, dificultadElegida);
-                String palabraSecreta = palabraAleatoriaDesdeRecurso(rutaTxt);
-                
-                System.out.println("nombre:" + nombre + ", idioma: " + idiomaElegido + ", dificultad elegida: " + dificultadElegida + " y palabra secreta: " + palabraSecreta);
-                
-                                                
-                InterfazTutorial tutorial = new InterfazTutorial(nombre, palabraSecreta); 
-                tutorial.getFrame().setVisible(true);
+		contenedorMenu.setBounds(154, 337, 592, 320);
+		panel.add(contenedorMenu);
+		contenedorMenu.setLayout(null);
 
-                getFrame().dispose();
-            } 
-            catch (Exception ex) 
-            {
-                ex.printStackTrace();
-            }
-        });
-		
-		
-		
-		getFrame().setBounds(100, 100, 1000, 800);
-		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		btnInicio.setBounds(157, 68, 293, 41);
+		contenedorMenu.add(btnInicio);
+
+		btnTutorial.setBounds(157, 119, 293, 41);
+		contenedorMenu.add(btnTutorial);
+
+		btnConfig.setBounds(157, 176, 293, 41);
+		contenedorMenu.add(btnConfig);
+
+		btnRanking.setBounds(157, 232, 293, 41);
+		contenedorMenu.add(btnRanking);
+		contenedorMenu.setFocusTraversalPolicy(
+				new FocusTraversalOnArray(new Component[] { btnInicio, btnTutorial, btnConfig, btnRanking }));
+
+		panel.setBounds(32, 46, 900, 692);
+		panel.setLayout(null);
+
+		this.getContentPane().add(panel);
+		panel.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[] { contenedorMenu, logo, btnInicio, btnTutorial, btnConfig, btnRanking }));
+
+		this.setBounds(0, 0, 1000, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+
+	private void visualizarInterfazJuego(ActionEvent accion) 
+	{
+		InterfazWungsdle juego = new InterfazWungsdle(wordle);
+		juego.setVisible(true);
+		juego.setLocationRelativeTo(null);
+		this.dispose();
+	}
+
+	private void visualizarInterfazTutorial(ActionEvent accion) 
+	{
+		InterfazTutorial tutorial = new InterfazTutorial(this, this.wordle);
+		tutorial.setVisible(true);
+		tutorial.setLocationRelativeTo(null);
+		this.dispose();
 	}
 	
-
-	private static String rutaTxtSegunSeleccion(String idiomaElegido, String dificultadElegida)
-    {
-        boolean esEspanol = (idiomaElegido != null) && idiomaElegido.startsWith("Español");
-        boolean esFacil   = (dificultadElegida != null) && dificultadElegida.startsWith("Facil");
-
-        String lang = esEspanol ? "ES" : "EN";
-        String dif  = esFacil   ? "listaPalabrasFaciles" : "listaPalabraSDificiles";
-
-        
-        return "/recursos/" + dif + "_" + lang + ".txt";
-    }
-
-    private static String palabraAleatoriaDesdeRecurso(String rutaRecurso)
-    {
-        List<String> palabras = new ArrayList<>();
-
-        
-        try (InputStream is = InterfazInicio.class.getResourceAsStream(rutaRecurso))
-        {
-            if (is == null) {
-                throw new IllegalArgumentException("No se encontró el recurso: " + rutaRecurso);
-            }
-
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)))
-            {
-                String line;
-                while ((line = br.readLine()) != null)
-                {
-                    line = line.trim();
-                    if (!line.isEmpty())
-                    {
-                        
-                        palabras.add(line);
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            throw new RuntimeException("Error leyendo el recurso: " + rutaRecurso, ex);
-        }
-
-        if (palabras.isEmpty()) {
-            throw new IllegalStateException("El archivo está vacío: " + rutaRecurso);
-        }
-
-        int idx = ThreadLocalRandom.current().nextInt(palabras.size());
-        return palabras.get(idx);
-    }
-   
-   // Funciones auxiliares
-	public JFrame getFrame() 
+	private void visualizarInterfazConfiguracion(ActionEvent accion) 
 	{
-		return frame;
+		InterfazConfig config = new InterfazConfig(this, this.wordle);
+		config.setVisible(true);
+		config.setLocationRelativeTo(null);
+		this.dispose();
 	}
 
-	public void setFrame(JFrame frame)
+	private void visualizarInterfazRanking(ActionEvent accion) 
 	{
-		this.frame = frame;
+	    InterfazRanking ranking = new InterfazRanking(this, wordle);
+	    ranking.setVisible(true);
+	    ranking.setLocationRelativeTo(null);
+	    this.dispose();
 	}
+
+	public void actualizarTextos() 
+	{
+		iniciarJuego = (wordle.getTextoBotonInicio());
+		configuracion = (wordle.getTextoConfiguracion());
+
+	}
+
+	/// Este est� duplicado para diferenciarlo del que empieza con el main (el de
+	/// arriba) y el que es actualizado por la configuracion (este de abajo)
+	public void actualizarTextos(String nuevo) 
+	{
+		iniciarJuego = (wordle.getTextoBotonInicio());
+		InterfazInicio nuevaInterfazIdiomaActual = new InterfazInicio(wordle);
+		nuevaInterfazIdiomaActual.setVisible(true);
+		nuevaInterfazIdiomaActual.setLocationRelativeTo(null);
+		this.dispose();
+
+	}
+
 }

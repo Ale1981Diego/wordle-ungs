@@ -1,122 +1,73 @@
 package gui;
 
-import java.awt.EventQueue;
+import javax.swing.*;
+import entidades.Wungsdle;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-
-import entidades.Palabra;
-import entidades.Usuario;
-
-import java.awt.FlowLayout;
-import java.awt.Rectangle;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
-
-
-/* decidir si es o no necesaria esta pantalla o controlar el tutorial desde inicio. */
-public class InterfazTutorial
-{
-
+public class InterfazTutorial extends JFrame {
+	
+	private InterfazInicio menuPrincipal;
 	private JFrame frame;
-	private Usuario usuario;
-	private Palabra palabraSecreta;
-
-	/**
-	 * Create the application.
-	 */
-	public InterfazTutorial(String nombre, String palabraSecreta)
-	{
-		this.usuario = new Usuario(nombre);
-		this.palabraSecreta = new Palabra(palabraSecreta);
-		
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error setting native LAF: " + e);
-		}
-		
-		initialize();
+	private Wungsdle wordle;
+    private String volver = "";
+	
+	public InterfazTutorial(InterfazInicio menu, Wungsdle wordle) {
+		menuPrincipal = menu;
+		this.wordle = wordle;
+		crearInterfazTutorial();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize()
-	{
-		frame = new JFrame();
-		frame.setSize(800, 600);
-		frame.getContentPane().setLayout(null);
-		
-		if (usuario != null) 
-		{
-			JLabel nombreUsuario = new JLabel("Nombre: " + this.usuario.retornarNombre());
-			nombreUsuario.setHorizontalAlignment(SwingConstants.LEFT);
-			nombreUsuario.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-			nombreUsuario.setBounds(30, 51, 200, 48);
-			frame.getContentPane().add(nombreUsuario);
-		}
-		
+	private void crearInterfazTutorial() {
 
-		JLabel etiquetaLogoTutorial = new JLabel("");
-		etiquetaLogoTutorial.setIcon(new ImageIcon(InterfazJuego.class.getResource("/recursos/Logo.png")));
-		etiquetaLogoTutorial.setBounds(206, 23, 600, 150);
-		frame.getContentPane().add(etiquetaLogoTutorial);
-
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
+		JPanel tutorial = new JPanel();
+		JLabel etiquetaLogoTutorial = new JLabel();
 		JScrollPane tutorialScroll = new JScrollPane();
-		tutorialScroll.setBounds(141, 201, 724, 437);
-		frame.getContentPane().add(tutorialScroll);
-		
 		JLabel etiquetaTutorial = new JLabel("");
-		etiquetaTutorial.setIcon(new ImageIcon(InterfazTutorial.class.getResource("/recursos/Tutorial.png")));
+		JButton btnVolver = new JButton("");
+		
+        volver = wordle.getTextoBotonVolver();
+		btnVolver.setText(volver);
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent accion) {
+				RegresarMenuPrincipal(accion);
+			}
+		});
+
+		etiquetaLogoTutorial.setBounds(225, 11, 600, 167);
+		tutorialScroll.setBounds(169, 229, 699, 374);
+		tutorialScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		etiquetaTutorial.setAlignmentY(0.2f);
+		btnVolver.setBounds(412, 634, 263, 52);
+		tutorial.setLayout(null);
+		tutorial.add(etiquetaLogoTutorial);
 		tutorialScroll.setViewportView(etiquetaTutorial);
-	
 		
-		JButton btnSiguienteTutorial = new JButton("Siguiente ->");
-		btnSiguienteTutorial.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
-		btnSiguienteTutorial.setBounds(735, 676, 130, 36);
-		frame.getContentPane().add(btnSiguienteTutorial);
-		frame.setBounds(100, 100, 1000, 800);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-        btnSiguienteTutorial.addActionListener(e -> 
-        {
-            try 
-            {
-                InterfazJuego juego = new InterfazJuego(this.usuario, this.palabraSecreta);
-                juego.getFrame().setVisible(true); // o tutorial.setVisible(true) según cómo la tengas hecha
-                
-                frame.dispose(); // opcional: cierra la ventana actual
-            } 
-            catch (Exception ex) 
-            {
-                ex.printStackTrace();
-            }
-        });
-        
-		
+		if(wordle.getIdiomaActual().startsWith("English")) {
+			etiquetaLogoTutorial.setIcon(new ImageIcon(InterfazTutorial.class.getResource("/recursos/Logo.png")));
+			etiquetaTutorial.setIcon(new ImageIcon(InterfazTutorial.class.getResource("/recursos/TutorialIngles.jpg")));
+		}
+		else {
+			
+			etiquetaLogoTutorial.setIcon(new ImageIcon(InterfazTutorial.class.getResource("/recursos/LogoEspaniol.png")));
+			etiquetaTutorial.setIcon(new ImageIcon(InterfazTutorial.class.getResource("/recursos/Tutorial.png")));
+		}
+		tutorial.add(tutorialScroll);
+		tutorial.add(btnVolver);
+		btnVolver.setFont(new Font("Luckiest Guy", Font.BOLD, 14));
+
+		tutorial.setBounds(450, 100, 800, 800);
+
+		this.getContentPane().add(tutorial, BorderLayout.CENTER);
+		this.setBounds(0, 0, 1000, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 	}
-	
-	public JFrame getFrame()
-	{
-	    return frame;
+
+	private void RegresarMenuPrincipal(ActionEvent accion) {
+		menuPrincipal.setVisible(true);
+		menuPrincipal.setLocationRelativeTo(null);
+		this.dispose();
 	}
-	
 
 }

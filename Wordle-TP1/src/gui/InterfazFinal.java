@@ -1,49 +1,95 @@
 package gui;
 
-import java.awt.EventQueue;
+import javax.swing.*;
+import java.awt.*;
+import entidades.ConfiguracionInicial;
+import entidades.Wungsdle;
 
-import javax.swing.JFrame;
+public class InterfazFinal extends JFrame{
+	
+	private ConfiguracionInicial configuracionInicial;
+	private InterfazWungsdle interfazJuego;
+	private Wungsdle wungsdle;
+    private boolean gano;
 
-public class InterfazFinal {
+    public InterfazFinal(InterfazWungsdle juego, String usuario, String palabraSecreta, boolean gano, Wungsdle wordle) {
+    	interfazJuego = juego;
+    	this.wungsdle = wordle;
+        this.gano = gano;
+        crearInterfazFinal();
+    }
 
-	private JFrame frame;
+    private void crearInterfazFinal() {
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(new Runnable() 
-		{
-			public void run() 
-			{
-				try
-				{
-					InterfazFinal window = new InterfazFinal();
-					window.frame.setVisible(true);
-				} 
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+        new JFrame();
+        setSize(600, 450);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
 
-	/**
-	 * Create the application.
-	 */
-	public InterfazFinal() {
-		initialize();
-	}
+        //TITULO
+        JLabel titulo = new JLabel(gano ? "¡GANASTE!" : "GAME OVER");
+        titulo.setFont(new Font("Luckiest Guy", Font.PLAIN, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        titulo.setBounds(150, 20, 300, 50);
+        getContentPane().add(titulo);
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+        //NOMBRE
+        JLabel nombre = new JLabel("Jugador: " + wungsdle.getNombreUsuario());
+        nombre.setBounds(180, 90, 300, 25);
+        nombre.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+        getContentPane().add(nombre);
 
+        //Tiempo
+        JLabel tiempo = new JLabel("Tiempo: " + wungsdle.getTimeMilis(wungsdle.getTiempoUsuario()));
+        tiempo.setBounds(180, 120, 300, 25);
+        tiempo.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+        getContentPane().add(tiempo);
+
+        //PALABRA CORRECTA
+        JLabel palabra = new JLabel("La palabra era: " + wungsdle.getPalabraSecreta().toUpperCase());
+        palabra.setBounds(150, 160, 300, 30);
+        palabra.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+        palabra.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(palabra);
+
+        //MENSAJE EXTRA
+        JLabel mensaje = new JLabel("Mejor suerte la proxima");
+        mensaje.setBounds(150, 200, 300, 30);
+        mensaje.setHorizontalAlignment(SwingConstants.CENTER);
+        mensaje.setFont(new Font("Luckiest Guy", Font.PLAIN, 20));
+        getContentPane().add(mensaje);
+
+        //BOTON REINICIAR
+        JButton btnReiniciar = new JButton("Reiniciar");
+        btnReiniciar.setBounds(200, 260, 180, 40);
+        getContentPane().add(btnReiniciar);
+
+        btnReiniciar.addActionListener(e -> {
+        	configuracionInicial = new ConfiguracionInicial();
+            configuracionInicial.crearConfiguracionInicial(new Wungsdle());
+           
+            interfazJuego.dispose();
+            this.dispose();
+        });
+
+        //BOTON SALIR
+        JButton btnSalir = new JButton("Salir");
+        btnSalir.setBounds(200, 320, 180, 40);
+        getContentPane().add(btnSalir);
+
+        btnSalir.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        //COLOR DE FONDO SEGUN RESULTADO
+        if (gano) {
+            this.getContentPane().setBackground(new Color(200, 255, 200)); // verde claro
+        } else {
+            this.getContentPane().setBackground(new Color(255, 200, 200)); // rojo claro
+        }
+        this.setVisible(true);
+    }
+
+    
 }

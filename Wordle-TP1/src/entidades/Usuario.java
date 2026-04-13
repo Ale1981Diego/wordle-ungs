@@ -1,65 +1,98 @@
 package entidades;
 
+
 public class Usuario 
 {
 	private String nombre;
-	private int punto;
+	private Long tiempoRespuesta;
+	private int puntos;
 	private int intento;
 	
 	public Usuario()
 	{
-		this.nombre = "";
-		this.punto = 0;
-		this.intento = 0;
+		this.tiempoRespuesta = 0L;
+		this.intento = 6;
+		this.puntos = 0;
 	}
 	
 	public Usuario(String nombre)
 	{
 		this.nombre = nombre;
-		this.punto = 0;
+		this.tiempoRespuesta = 0L;
 		this.intento = 6;
+		this.puntos=0;
+	}
+
+	public void crearNombreUsuario(String nombre) 
+	{
+		this.nombre = nombre;
+	}
+	
+	public String getNombre()
+	{
+		return nombre;
+	}
+
+	public void setNombre(String nombre)
+	{
+		this.nombre = nombre;
+	}
+
+	
+	public Long getTiempoRespuesta() 
+	{
+		return tiempoRespuesta;
+	}
+
+	public void setTiempoRespuesta(Long tiempoRespuesta) 
+	{
+		this.tiempoRespuesta = tiempoRespuesta;
 	}
 
 
+	public int getIntento() 
+	{
+		return intento;
+	}
+
+	public void setIntento(int intento) 
+	{
+		this.intento = intento;
+	}
+
 	public void sumaPuntoLetraCoincideEnLugar()
 	{
-		 this.punto += 3;
+		 this.tiempoRespuesta += 3;
 	}
 	
 	public void sumaPuntoLetraExiste()
 	{
-		this.punto += 1;
+		this.tiempoRespuesta += 1;
 	}
 	
 	public void aciertaPalabraCompleta()
 	{
-		this.punto += (3*5);
+		this.tiempoRespuesta += (3*5);
 	}
 	
-	public int restaPuntoLetraNoCoincide()
-	{
-		return this.punto -= 1;
-	}
-	
-
-	public String retornarNombre() 
-	{
-		return this.nombre;
-	}
-	
-	public int retornarPuntos()
-	{
-		return this.punto;
+	public int getPuntos() {
+		return this.puntos;
+		
 	}
 	
 	public void descontarIntento()
 	{
 		this.intento -= 1;
 	}
-	
-	public int mostrarIntento()
+
+	public void sumarPuntos(int i) 
 	{
-		return this.intento;
+		this.puntos += i;
+	}
+
+	public boolean estaVacioNombre() 
+	{
+		return nombre.isEmpty();
 	}
 	
 	
